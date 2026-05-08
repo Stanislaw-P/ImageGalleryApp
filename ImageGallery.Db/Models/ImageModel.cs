@@ -9,8 +9,10 @@ namespace ImageGallery.Db.Models
     public class ImageModel
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
+        public string? Title { get; set; }
         public string? Description { get; set; }
-        public string Url { get; set; } = null!;
+        public string FileName { get; set; } = null!;
+        public string FilePath { get; set; } = null!;
+        public DateTime UploadDate { get; set; } = DateTime.UtcNow;
     }
 }

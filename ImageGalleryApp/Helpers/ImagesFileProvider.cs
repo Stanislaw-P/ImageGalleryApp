@@ -34,11 +34,11 @@ namespace ImageGalleryApp.Helpers
                 if (!Directory.Exists(uploadsFolder))
                     Directory.CreateDirectory(uploadsFolder);
 
-                string fileName = file.Name;
+                string fileName = file.FileName;
                 
                 // Если пользователь ввел заголовок, создаем файл с названием заголовка
-                if (image.Name != null)
-                    fileName = Path.Combine(image.Name, Path.GetExtension(file.Name));
+                if (image.Title != null)
+                    fileName = image.Title + Path.GetExtension(file.FileName);
 
                 string filePath = Path.Combine(uploadsFolder, fileName);
 
