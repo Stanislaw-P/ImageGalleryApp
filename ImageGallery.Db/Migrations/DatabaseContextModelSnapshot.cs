@@ -21,7 +21,7 @@ namespace ImageGallery.Db.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ImageGallery.Db.Models.Image", b =>
+            modelBuilder.Entity("ImageGallery.Db.Models.ImageModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
