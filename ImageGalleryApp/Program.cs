@@ -15,7 +15,28 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scoped = app.Services.CreateScope())
+{
+    var dbContext = scoped.ServiceProvider.GetRequiredService<DatabaseContext>();
+    try
+    {
+        dbContext.Database.Migrate();
+        Console.WriteLine("Database migrated successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration error: {ex.Message}");
+    }
+}
+
+app.UseStaticFiles();
+
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/index.html");
+    return Task.CompletedTask;
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -26,14 +47,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseStaticFiles();
-
 app.MapControllers();
-
-app.MapGet("/", context =>
-{
-    context.Response.Redirect("/index.html");
-    return Task.CompletedTask;
-});
 
 app.Run();
