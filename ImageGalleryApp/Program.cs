@@ -1,5 +1,6 @@
 using ImageGallery.Db;
 using ImageGallery.Db.Repositories;
+using ImageGalleryApp.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddTransient<IImagesRepository, ImagesInDbRepository>();
+builder.Services.AddTransient<ImagesFileProvider>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
