@@ -30,7 +30,7 @@ namespace ImageGalleryApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] ImageUploadDto request)
+        public async Task<IActionResult> CreateAsync(ImageUploadDto request)
         {
             if (request.File == null || request.File.Length == 0)
                 return BadRequest("Файл не выбран");
@@ -54,5 +54,25 @@ namespace ImageGalleryApp.Controllers
 
             return Ok(image);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            if (id == 0)
+                return BadRequest("id должен быть больше 0");
+
+            var existingImage = await _imagesRepository.TryGetByIdAsync(id);
+            if (existingImage == null)
+                return NotFound();
+
+            var result = _imagesFileProvider.Delete(existingImage.FilePath);
+            if (result == false)
+                return BadRequest("Не удалось удалить файл изображения с сервера");
+
+            await _imagesRepository.DeleteAsync(existingImage);
+
+            return NoContent();
+        }
+
     }
 }

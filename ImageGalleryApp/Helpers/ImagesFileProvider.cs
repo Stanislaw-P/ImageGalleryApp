@@ -1,4 +1,5 @@
 ﻿using ImageGallery.Db.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ImageGalleryApp.Helpers
 {
@@ -35,7 +36,7 @@ namespace ImageGalleryApp.Helpers
                     Directory.CreateDirectory(uploadsFolder);
 
                 string fileName = file.FileName;
-                
+
                 // Если пользователь ввел заголовок, создаем файл с названием заголовка
                 if (image.Title != null)
                     fileName = image.Title + Path.GetExtension(file.FileName);
@@ -53,6 +54,28 @@ namespace ImageGalleryApp.Helpers
             {
                 _logger.LogError(ex, "Ошибка сохранения файла изображения");
                 return null;
+            }
+        }
+
+        public bool Delete(string path)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                    throw new ArgumentNullException(nameof(path));
+
+                var filePath = Path.Combine(_environment.WebRootPath, path.TrimStart('/'));
+
+                if (!File.Exists(filePath))
+                    throw new ArgumentException("Файл не существует", nameof(path));
+
+                File.Delete(filePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка удаления файла изображения");
+                return false;
             }
         }
     }

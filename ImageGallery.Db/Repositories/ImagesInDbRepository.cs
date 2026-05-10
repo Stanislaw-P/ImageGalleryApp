@@ -35,22 +35,21 @@ namespace ImageGallery.Db.Repositories
             }
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(ImageModel image)
         {
             try
             {
-                var existingImg = await TryGetByIdAsync(id);
-                if (existingImg == null)
-                    return false;
+                if (image == null)
+                    throw new ArgumentNullException(nameof(image));
 
-                _context.Remove(existingImg);
+                _context.Remove(image);
                 await _context.SaveChangesAsync();
 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка удаления изображения с id={id}");
+                _logger.LogError(ex, $"Ошибка удаления изображения с id={image.Id}");
                 return false;
             }
         }
