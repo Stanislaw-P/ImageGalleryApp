@@ -1,7 +1,7 @@
 using ImageGallery.Db.Models;
 using ImageGallery.Db.Repositories;
-using ImageGalleryApp.Helpers;
 using ImageGalleryApp.Models;
+using ImageGalleryApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGalleryApp.Controllers

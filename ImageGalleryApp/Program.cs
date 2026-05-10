@@ -1,6 +1,6 @@
 using ImageGallery.Db;
 using ImageGallery.Db.Repositories;
-using ImageGalleryApp.Helpers;
+using ImageGalleryApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

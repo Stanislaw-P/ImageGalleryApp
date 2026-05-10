@@ -1,7 +1,6 @@
 ﻿using ImageGallery.Db.Models;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace ImageGalleryApp.Helpers
+namespace ImageGalleryApp.Services
 {
     public class ImagesFileProvider
     {
