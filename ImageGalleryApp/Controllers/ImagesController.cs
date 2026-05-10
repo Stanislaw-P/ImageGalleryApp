@@ -74,5 +74,22 @@ namespace ImageGalleryApp.Controllers
             return NoContent();
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, ImageUpdateDto request)
+        {
+            if (id == 0)
+                return BadRequest("id должен быть больше 0");
+
+            var existingImage = await _imagesRepository.TryGetByIdAsync(id);
+            if (existingImage == null)
+                return NotFound();
+
+            existingImage.Title = request?.Title?.Trim();
+            existingImage.Description = request?.Description?.Trim();
+
+            await _imagesRepository.UpdateAsync(existingImage);
+
+            return NoContent();
+        }
     }
 }
