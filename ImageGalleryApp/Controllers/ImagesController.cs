@@ -11,9 +11,9 @@ namespace ImageGalleryApp.Controllers
     public class ImagesController : ControllerBase
     {
         readonly IImagesRepository _imagesRepository;
-        readonly ImagesFileProvider _imagesFileProvider;
+        readonly IImagesFileProvider _imagesFileProvider;
 
-        public ImagesController(IImagesRepository imagesRepository, ImagesFileProvider imagesFileProvider)
+        public ImagesController(IImagesRepository imagesRepository, IImagesFileProvider imagesFileProvider)
         {
             _imagesRepository = imagesRepository;
             _imagesFileProvider = imagesFileProvider;
@@ -42,17 +42,24 @@ namespace ImageGalleryApp.Controllers
                 FileName = request.File.FileName // Если title будет null, так можно будет определить название
             };
 
-            var filePath = await _imagesFileProvider.SaveAsync(image, request.File);
-            if (filePath == null)
-                return BadRequest("Не удалось сохранить файл изображения");
+            try
+            {
+                var filePath = await _imagesFileProvider.SaveAsync(image, request.File);
+                if (filePath == null)
+                    return BadRequest("Не удалось сохранить файл изображения");
 
-            image.FilePath = filePath;
+                image.FilePath = filePath;
 
-            var result = await _imagesRepository.AddAsync(image);
-            if (result == false)
-                return BadRequest("Не удалось сохранить запись в БД");
+                var result = await _imagesRepository.AddAsync(image);
+                if (result == false)
+                    return BadRequest("Не удалось сохранить запись в БД");
 
-            return Ok(image);
+                return Ok(image);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpDelete("{id}")]

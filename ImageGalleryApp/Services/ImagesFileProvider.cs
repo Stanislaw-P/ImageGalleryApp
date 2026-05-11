@@ -2,7 +2,7 @@
 
 namespace ImageGalleryApp.Services
 {
-    public class ImagesFileProvider
+    public class ImagesFileProvider : IImagesFileProvider
     {
         readonly IWebHostEnvironment _environment;
         readonly ILogger<ImagesFileProvider> _logger;
@@ -22,14 +22,14 @@ namespace ImageGalleryApp.Services
         /// <exception cref="ArgumentNullException">Один и аргументов метода был null</exception>
         public async Task<string?> SaveAsync(ImageModel image, IFormFile file)
         {
+            if (image == null)
+                throw new ArgumentNullException(nameof(image));
+
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
             try
             {
-                if (image == null)
-                    throw new ArgumentNullException(nameof(image));
-
-                if (file == null)
-                    throw new ArgumentNullException(nameof(file));
-
                 string uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
                 if (!Directory.Exists(uploadsFolder))
                     Directory.CreateDirectory(uploadsFolder);

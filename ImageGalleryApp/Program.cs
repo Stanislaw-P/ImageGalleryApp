@@ -12,7 +12,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(connectionString));
 
 builder.Services.AddTransient<IImagesRepository, ImagesInDbRepository>();
-builder.Services.AddTransient<ImagesFileProvider>();
+builder.Services.AddScoped<IImagesFileProvider, ImagesFileProvider>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

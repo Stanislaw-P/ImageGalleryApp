@@ -42,14 +42,14 @@ namespace ImageGallery.Db.Repositories
                 if (image == null)
                     throw new ArgumentNullException(nameof(image));
 
-                _context.Remove(image);
+                _context.Images.Remove(image);
                 await _context.SaveChangesAsync();
 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Ошибка удаления изображения с id={image.Id}");
+                _logger.LogError(ex, $"Ошибка удаления изображения");
                 return false;
             }
         }
