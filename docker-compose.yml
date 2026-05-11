@@ -11,6 +11,8 @@ services:
     volumes:
       - postgres_data_image_gallery:/var/lib/postgresql/data
     restart: unless-stopped
+    networks:
+      - img_gallery_network
 
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -23,6 +25,30 @@ services:
     depends_on:
       - postgres
     restart: unless-stopped
+    networks:
+      - img_gallery_network
+
+  # Добавленный сервис для ASP.NET приложения
+  imagegallery.api:
+    build:
+      context: .
+      dockerfile: ImageGalleryApp/Dockerfile
+    container_name: imgGallery_api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - img_gallery_network
+
+networks:
+  img_gallery_network:
+    driver: bridge
 
 volumes:
   postgres_data_image_gallery:

@@ -9,6 +9,7 @@
 uploads/
 
 # User-specific files
+*.env
 *.rsuser
 *.suo
 *.user
